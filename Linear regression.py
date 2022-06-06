@@ -1,9 +1,9 @@
 # Linear regression project
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 #%%
 customers = pd.read_csv("/Users/janekom/Desktop/Refactored_Py_DS_ML_Bootcamp-master/11-Linear-Regression/Ecommerce Customers")
 customers.head()
@@ -88,18 +88,5 @@ coefficients
 # or develop the app more since that is what is working better. This sort of answer really depends on the other factors
 # going on at the company, and it would probably to explore the relationship between Length of Membership
 # and the App or the Website before coming to a conclusion.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
