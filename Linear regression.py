@@ -16,6 +16,7 @@ customers.info()
 # Time on Website and Yearly Amount Spent columns to check does the correlation make sense.
 sns.set_palette("GnBu_d")
 sns.set_style('whitegrid')
+
 # More time on site, more money spent
 sns.jointplot(x='Time on Website',y='Yearly Amount Spent',data=customers)
 
