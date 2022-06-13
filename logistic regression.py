@@ -7,7 +7,7 @@ import seaborn as sns
 
 #%%
 # get the data
-ad_data = pd.read_csv('/Users/janekom/Desktop/Refactored_Py_DS_ML_Bootcamp-master/13-Logistic-Regression/advertising.csv')
+ad_data = pd.read_csv('/Users/janekom/Desktop/Logistic-Regression/advertising.csv')
 ad_data.head()
 ad_data.info()
 ad_data.describe()
@@ -54,20 +54,4 @@ predictions = logmodel.predict(X_test)
 # create a classification report for the model
 from sklearn.metrics import classification_report
 print(classification_report(y_test,predictions))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
