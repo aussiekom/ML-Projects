@@ -89,4 +89,3 @@ coefficients
 # going on at the company, and it would probably to explore the relationship between Length of Membership
 # and the App or the Website before coming to a conclusion.
 
-
