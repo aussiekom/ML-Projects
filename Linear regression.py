@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #%%
-customers = pd.read_csv("/Users/janekom/Desktop/Refactored_Py_DS_ML_Bootcamp-master/11-Linear-Regression/Ecommerce Customers")
+customers = pd.read_csv("/Users/janekom/Desktop/Linear-Regression/Ecommerce Customers")
 customers.head()
 customers.describe()
 customers.info()
