@@ -46,6 +46,7 @@ from sklearn.linear_model import LogisticRegression
 logmodel = LogisticRegression()
 logmodel.fit(X_train,y_train)
 
+
 #%%
 # prediction and evaluation
 # predict values for the testing data
