@@ -117,10 +117,7 @@ plot_ly(housing, x = ~round(residuals(model1()),2), type = "histogram", marker =
   tickfont = list(
   family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) %>%
   layout(plot_bgcolor='#678EB9', paper_bgcolor='#678EB9')
-
-
 })
-
 
 ```
 
