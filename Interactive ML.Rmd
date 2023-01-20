@@ -1,8 +1,8 @@
 ---
-title: "Interactive ML - Linear Regression"
+title: "Interactive ML app"
 output: 
   flexdashboard::flex_dashboard:
-    theme: spacelab
+    theme: flatly
     vertical_layout: fill
     orientation: columns
 runtime: shiny
@@ -18,9 +18,13 @@ library(plotly)
 ```
 
 ```{r data}
-housing <- read.csv("USA_Housing.csv", col.names = c("Avg.Income","Avg.House.Age", "Avg.Num.of.Rooms",  "Avg.Num.of.Bedrooms",  "Area.Population",  "Price", "Address"))
+housing <- read.csv("USA_Housing.csv", 
+                    col.names = c("Avg.Income","Avg.House.Age", "Avg.Num.of.Rooms", 
+                                  "Avg.Num.of.Bedrooms", "Area.Population",  
+                                  "Price", "Address"))
 
-variables <- c("Avg.Income","Avg.House.Age", "Avg.Num.of.Rooms",  "Avg.Num.of.Bedrooms",  "Area.Population")
+variables <- c("Avg.Income","Avg.House.Age", "Avg.Num.of.Rooms",
+               "Avg.Num.of.Bedrooms", "Area.Population")
 
 ```
 
@@ -28,14 +32,18 @@ Column {.sidebar data-width=200}
 -----------------------------------------------------------------
 
 ```{r inputs}
-selectInput("variable_choice", label = h5("Choose one or more input variables"), 
-            choices = variables, variables[1], multiple = TRUE)
+selectInput("variable_choice", 
+            label = h5("Choose one or more input variables"), 
+            choices = variables, 
+            variables[1], 
+            multiple = TRUE)
 
 ```
 
 
 ```{r reactive expression}
 model1 <- reactive({
+  
   vars <- as.matrix(housing[, input$variable_choice])
   lm(Price ~ vars, data = housing)
   
@@ -43,17 +51,18 @@ model1 <- reactive({
 
 ```
 
-Column {data-width=400}
+Column {data-width = 400}
 -----------------------------------------------------------------------
 
 ###
 
 ```{r model output}
-renderPrint({ 
+shiny::renderPrint({ 
    
 summary(model1())
 
 })
+
 
 ```
 
@@ -62,11 +71,19 @@ summary(model1())
 ```{r table}
 DT::renderDataTable({
 
- DT::datatable(housing %>% mutate(predicted = predict(model1()), residuals = residuals(model1())) %>% select(Price, predicted, residuals), 
- rownames = FALSE, colnames = c('actual price', 'predicted price', 'residuals'), extensions = c('Buttons', 'Responsive'), 
- options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrt', 
- buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, lengthMenu = c(20, 100, 1000, nrow(housing)), scrollY = 300, scrollCollapse = TRUE)) %>% 
- formatCurrency(c('Price', 'predicted', 'residuals'))
+ DT::datatable(housing %>% 
+                mutate(predicted = predict(model1()), residuals = residuals(model1())) %>% 
+                 select(Price, predicted, residuals), 
+               rownames = FALSE, 
+               colnames = c("actual price", "predicted price", "residuals"), 
+               extensions = c("Buttons", "Responsive"), 
+               options = list(columnDefs = list(list(className = "dt-center", targets = "_all")),
+                              dom = "Blfrt", 
+                              buttons = c("copy", "csv", "excel", "print"), 
+                              searching = FALSE, 
+                              lengthMenu = c(20, 100, 1000, nrow(housing)), 
+                              scrollY = 300, scrollCollapse = TRUE)) %>% 
+    formatCurrency(c("Price", "predicted", "residuals"))
  
 })
 
@@ -78,22 +95,36 @@ Column {data-width=400}
 ###
 
 ```{r scatter}
-renderPlotly({
+plotly::renderPlotly({
 
 plot_ly(data = housing, y = ~predict(model1()), x = ~Price,
                type = "scatter", mode = "markers",
                marker = list(size = 5,
-                             color = '#FFFFFF',
-                             line = list(color = '#EA6345', 
+                             color = "#FFFFFF",
+                             line = list(color = "#EA6345", 
                                          width = 2))) %>% 
-  layout(title = '',
-         yaxis = list(zeroline = FALSE, title = "predicted price", titlefont = list(
-  family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), tickfont = list(
-  family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white", size = 2),
-         xaxis = list(zeroline = FALSE, title = "actual price", titlefont = list(
-  family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), tickfont = list(
-  family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white", size = 7)) %>%
-  layout(plot_bgcolor='#678EB9', paper_bgcolor='#678EB9')
+  layout(title = "",
+         yaxis = list(zeroline = FALSE, 
+                      title = "predicted price", 
+                      titlefont = list(family = "Lucida Console, Courier New, monospace", 
+                                       size = 12, 
+                                       color = "#FFFFFF"), 
+                      tickfont = list(family = "Lucida Console, Courier New, monospace", 
+                                      size = 10, 
+                                      color = "#FFFFFF"), 
+                      color =  "white", size = 2),
+         
+         xaxis = list(zeroline = FALSE, 
+                      title = "actual price", 
+                      titlefont = list(family = "Lucida Console, Courier New, monospace", 
+                                       size = 12, 
+                                       color = "#FFFFFF"), 
+                      tickfont = list(family = "Lucida Console, Courier New, monospace", 
+                                      size = 10, 
+                                      color = "#FFFFFF"), 
+                      color =  "white", size = 7)) %>%
+    
+  layout(plot_bgcolor="#678EB9", paper_bgcolor="#678EB9")
 
   
 })
@@ -106,18 +137,32 @@ plot_ly(data = housing, y = ~predict(model1()), x = ~Price,
 renderPlotly({
   
 
-plot_ly(housing, x = ~round(residuals(model1()),2), type = "histogram", marker = list(color = "#EA6345",
-                            line = list(color = "#FFFFFF", width = 1))) %>%   layout(title = '',
-         yaxis = list(zeroline = FALSE, title = "frequency",  titlefont = list(
-  family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), 
-  tickfont = list(
-  family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white"),
-         xaxis = list(zeroline = FALSE, title = "residual",  titlefont = list(
-  family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), 
-  tickfont = list(
-  family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) %>%
-  layout(plot_bgcolor='#678EB9', paper_bgcolor='#678EB9')
+plot_ly(housing, x = ~round(residuals(model1()),2), 
+        type = "histogram", 
+        marker = list(color = "#EA6345",
+                      line = list(color = "#FFFFFF", width = 1))) %>%   
+    layout(title = "",
+         yaxis = list(zeroline = FALSE, 
+                      title = "frequency",  
+                      titlefont = list(family = "Lucida Console, Courier New, monospace", 
+                                       size = 12, 
+                                       color = "#FFFFFF"), 
+                      tickfont = list(family = "Lucida Console, Courier New, monospace", 
+                                      size = 10, 
+                                      color = "#FFFFFF"), 
+                      color =  "white"),
+         xaxis = list(zeroline = FALSE, 
+                      title = "residual",  
+                      titlefont = list(family = "Lucida Console, Courier New, monospace", 
+                                       size = 12, 
+                                       color = "#FFFFFF"), 
+                      tickfont = list(family = "Lucida Console, Courier New, monospace", 
+                                      size = 10, 
+                                      color = "#FFFFFF"), 
+                      color =  "white")) %>%
+    layout(plot_bgcolor="#678EB9", paper_bgcolor="#678EB9")
 })
+
 
 ```
 
