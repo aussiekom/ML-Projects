@@ -527,6 +527,7 @@ for batch in tqdm(submission_dataloader):
 preds = np.concatenate(preds, axis=0)
 offsets = np.concatenate(offsets, axis=0)
 seq_ids = np.concatenate(seq_ids, axis=0)
+
 #%%
 location_preds = get_location_predictions(preds, offsets, seq_ids, test=True)
 
