@@ -163,7 +163,6 @@ plot_ly(housing, x = ~round(residuals(model1()),2),
     layout(plot_bgcolor="#678EB9", paper_bgcolor="#678EB9")
 })
 
-
 ```
 
 
